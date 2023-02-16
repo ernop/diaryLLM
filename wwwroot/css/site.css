@@ -1,0 +1,58 @@
+﻿td {
+    border: 4px;
+    border-top: 2px dashed lightgrey;
+    border-left: 2px dashed lightgrey;
+    padding-left:6px;
+    vertical-align:top;
+}
+
+
+
+.button {
+    display:inline-block;
+    border-radius: 6px;
+    border-top:13px;
+    border:3px;
+    background-color: #B99;
+    border: 1px solid #BBB;
+    padding: 4px;
+}
+
+.button:hover{
+    background-color:#DBB;
+}
+
+a{
+    text-decoration:none;
+}
+
+.queryResultBlock{
+    cursor:pointer;
+}
+
+.mainTranscript{
+    width:50%;
+}
+
+.queryKind {
+    background-color: #DDD;
+    border: 1px solid #BBB;
+    padding: 3px;
+    display:block;
+}
+
+.renderedQuery{
+    display:inline-block;
+}
+
+.humanPrompt{
+    display:inline-block;
+}
+
+.fullPrompt {
+    display: inline-block;
+}
+
+.queryDeleteButton{
+    float:right;
+}

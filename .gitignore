@@ -1,0 +1,5 @@
+*.secret
+bin/*
+obj/*
+*.csproj.user
+.vs/*

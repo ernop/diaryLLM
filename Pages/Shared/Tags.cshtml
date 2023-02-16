@@ -1,0 +1,25 @@
+﻿@model TagsIndexModel
+
+<h1>trans</h1>
+
+<h1>Transcripts</h1>
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td> 
+        <td>created</td>
+        <td>date</td>
+        <td>tags</td>
+    </tr>
+    @foreach (var item in Model.Tags)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.CreatedUtc</td>
+            <td>@item.UpdatedUtc</td>
+            <td>@Html.Raw(item.Link())</td>
+            <td>@Html.Raw(string.Join(',',item.TagInstances.Select(el=>el.Link())))</td>
+        </tr>
+    }
+</table>

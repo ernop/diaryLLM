@@ -1,0 +1,23 @@
+﻿@model PersonIndexModel
+
+<h1>trans</h1>
+
+<h1>Person</h1>
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td> 
+        <td>created</td>
+        <td>updated</td>
+    </tr>
+    @foreach (var item in Model.People)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.CreatedUtc</td>
+            <td>@item.UpdatedUtc</td>
+            <td>@Html.Raw(item.Link())</td>
+        </tr>
+    }
+</table>
