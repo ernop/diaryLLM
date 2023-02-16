@@ -1,0 +1,37 @@
+﻿@model TranscriptsModel
+
+<h1>Transcripts</h1>
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td>
+        <td>words</td>
+        <td>recorder</td>
+        <td>created</td>
+        <td>date</td>
+        <td>tags</td>
+        <td>chunks</td>
+        <td>line</td>
+    </tr>
+    @foreach (var item in Model.Transcripts)
+    {
+        <tr>
+            <td style="font-size:2.5em;"><a href="/transcript/@item.Id">@item.Id</a></td>
+            <td>@item.Filename</td>
+            <td>@item.Content.Split(' ').Length</td>
+            <td>@Html.Raw(item.Recorder?.Link())</td>
+            <td>@item.CreatedUtc</td>
+            <td>@item.Date</td>
+            <td>@Html.Raw(string.Join(',',item.TagInstances.Select(el=>el.Link())))</td>
+            <td>
+
+                @if (item.Chunks != null)
+                {
+                    @item.Chunks.Count();
+                }
+
+            </td>
+            <td>@item.Content?.Substring(0,Math.Min(item.Content.Length,150))</td>
+        </tr>
+    }
+</table>

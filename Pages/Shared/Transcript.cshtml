@@ -1,0 +1,72 @@
+﻿@model TranscriptModel
+
+<h1>@Model.Transcript.Filename</h1>
+@Model.Transcript.Id
+<br />@Model.Transcript.TranscriptPath
+
+<br />@Model.Transcript.Recorder
+<br />@Model.Transcript.CreatedUtc
+<br />@Model.Transcript.UpdatedUtc
+
+<table>
+    <h2>Chunks</h2>
+    <table>
+        @foreach (var chunk in Model.Transcript.Chunks)
+        {
+            <tr>
+                <td>
+                    <h4>@(chunk.Id)</h4>
+                    <div class="mainTranscript">
+                        @Html.Raw(Util.Newlineify(chunk.Content))
+                    </div>
+                    <hr>
+                </td>
+                <td>
+                    @foreach (var query in chunk.Queries.OrderBy(el => el.Kind))
+                    {
+                        <div class="queryResultBlock">
+                            <div class="queryKind">
+                                <div class="humanPrompt" title="@query.HumanPrompt">@query.Kind</div>
+                                <div class="fullPrompt" title="@query.Prompt">(full)</div>
+                                <a class="queryDeleteButton button" href="/Query/@query.Id/delete">X</a>
+
+                            </div>
+                            
+                            <hr>
+                            <div class="renderedQuery">
+                                @Html.Raw(@Util.GetQuery(query.Kind).Render(query.Response))
+                            </div>
+                        </div>
+                    }
+                </td>
+
+
+                <td>
+                    <h3>Add Query</h3>
+                    <a class="button" href="/dolookup/@chunk.Id/summarize/">Summarize</a>
+                    <a class="button" href="/dolookup/@chunk.Id/meta/">Meta</a>
+                    <a class="button" href="/dolookup/@chunk.Id/emotions/">Emotions</a>
+                    <a class="button" href="/dolookup/@chunk.Id/people/">People</a>
+                    <a class="button" href="/dolookup/@chunk.Id/rewrite/">Rewrite</a>
+                    <a class="button" href="/dolookup/@chunk.Id/personality/">Personality</a>
+                    <a class="button" href="/dolookup/@chunk.Id/objects/">Objects</a>
+                    <a class="button" href="/dolookup/@chunk.Id/places/">Places</a>
+                    <a class="button" href="/dolookup/@chunk.Id/stories/">Stories</a>
+                    <a class="button" href="/dolookup/@chunk.Id/questions/">Questions</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    @foreach (var item in Model.Transcript.TagInstances)
+    {
+        <tr>
+            <td>@item.Tag.Name</td>
+        </tr>
+    }
+</table>
+
+<h2>All Content:</h2>
+<br />
+
+@Model.Transcript.Content
