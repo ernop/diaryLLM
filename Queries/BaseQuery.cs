@@ -19,8 +19,8 @@ namespace DiaryUI
         public abstract string HumanReadablePrompt { get; }
         public abstract string Render(string rawResponse);
         public virtual bool ReturnsJson => false;
-        public string AppendTranscriptToPrompt(Chunk chunk) => $"Here is the transcript of the audio recording:{Newline}'{chunk.Content}'{Newline}";
-        public string GenericInstructions(string fn) => $"The following is a transcript of an audio recording, with filename: '{fn}'";
+        public string AppendTranscriptToPrompt(Chunk chunk) => $"Here is the transcript of the audio recording:{Newline}\'{chunk.Content}\'{Newline}";
+        public string GenericInstructions(string fn) => $"The following is a transcript of an audio recording, with filename: \"{fn}\"";
         public virtual List<string> PromptBuildingComponents { get; set; } = new List<string>();
         public virtual string GenerateFullPrompt(Chunk chunk, string filename)
         {
@@ -161,7 +161,7 @@ namespace DiaryUI
     public class ObjectsQuery : JsonQuery
     {
         public override string HumanReadablePrompt => $"List all physical objects mentioned.  Make sure they are real, physical objects, not abstract concepts.";
-        public override string JsonTemplate => "[<object name>, ...].";
+        public override string JsonTemplate => "[\"<object name>\", ...]";
         public override string Render(string rawResponse)
         {
             var formatter = (List<string> oo) =>

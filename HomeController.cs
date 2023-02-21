@@ -117,9 +117,11 @@ namespace DiaryUI
                 foreach (var fp in System.IO.Directory.GetFiles(Config.TranscriptRawFP))
                 {
                     if (!fp.EndsWith(".txt")) { continue; }
-
+                    Console.WriteLine($"evaluating {fp}");
                     //existence.
-                    var exiTranscript = db.Transcripts.FirstOrDefault(p => p.TranscriptPath == fp);
+                    var exiTranscript = db.Transcripts
+                        .Include(el=>el.Chunks)
+                        .FirstOrDefault(p => p.TranscriptPath == fp);
                     if (exiTranscript != null)
                     {
                         if (exiTranscript.Chunks == null)
@@ -139,7 +141,7 @@ namespace DiaryUI
                     }
                 }
 
-                return View();
+                return Redirect("/transcripts");
             }
         }
 
@@ -210,10 +212,5 @@ namespace DiaryUI
                 return View(model);
             }
         }
-    }
-
-    public class PersonIndexModel
-    {
-        public List<Person> People { get; set; }
     }
 }
