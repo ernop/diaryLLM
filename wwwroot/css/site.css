@@ -6,6 +6,18 @@
     vertical-align:top;
 }
 
+tr.header td {
+    font-size: 1.2em;
+    text-align: center;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: white;
+    border: 2px solid black;
+    border: 2px solid black;
+    border: 2px solid black;
+}
+
 
 
 .button {
@@ -30,9 +42,7 @@ a{
     cursor:pointer;
 }
 
-.mainTranscript{
-    width:50%;
-}
+
 
 .queryKind {
     background-color: #DDD;
@@ -55,4 +65,8 @@ a{
 
 .queryDeleteButton{
     float:right;
+}
+
+.mainTranscript {
+    
 }

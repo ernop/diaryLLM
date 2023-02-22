@@ -16,6 +16,11 @@
         public Transcript Transcript { get; set; }
     }
 
+    public class ChunksModel
+    {
+        public List<Chunk> Chunks { get; set; }
+    }
+
     public class IndexModel { }
 
     public class PersonIndexModel

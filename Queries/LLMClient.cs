@@ -43,6 +43,11 @@ namespace DiaryUI
             }
             catch (Exception ex)
             {
+                // my tokenizer doesn't match theirs, which causes problems.
+                if (ex.InnerException.Message.StartsWith("Message = \"CreateCompletionAsync Failed! HTTP status code: BadRequest"))
+                {
+
+                }
                 return null;
             }
             

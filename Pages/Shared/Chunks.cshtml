@@ -1,0 +1,25 @@
+﻿@model ChunksModel
+
+<h1>@ViewData["title"]</h1>
+<table>
+    <tr class="header">
+        <td>id</td>
+        <td>related transcript</td>
+        <td>queries</td>
+        <td>length</td>
+        <td>content</td>
+        <td>date</td>
+    </tr>
+    @foreach (var item in Model.Chunks)
+    {
+        <tr>
+            <td style="font-size:2.5em;"><a href="/chunk/@item.Id">@item.Id</a></td>
+            <td>@Html.Raw(item.Transcript.Link())</td>
+            <td>@item.Queries.Count()</td>
+            <td>@item.Content.Split(' ').Length</td>
+            <td>@item.Content.Substring(0, Math.Min(100,item.Content.Length))</td>
+            <td>@item.CreatedUtc.ToLongDateString()</td>
+            <td><a class="chunkDeleteButton button" href="/Chunk/@item.Id/delete">X</a></td>
+        </tr>
+    }
+</table>

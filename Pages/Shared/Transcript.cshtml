@@ -1,12 +1,12 @@
 ﻿@model TranscriptModel
 
 <h1>@Model.Transcript.Filename</h1>
-@Model.Transcript.Id
-<br />@Model.Transcript.TranscriptPath
+<br />Transcript ID: @Model.Transcript.Id
+<br />Path: @Model.Transcript.TranscriptPath
 
-<br />@Model.Transcript.Recorder
-<br />@Model.Transcript.CreatedUtc
-<br />@Model.Transcript.UpdatedUtc
+<br />Recorder: @Model.Transcript.Recorder
+<br />Created: @Model.Transcript.CreatedUtc
+<br />Updated: @Model.Transcript.UpdatedUtc
 
 <table>
     <h2>Chunks</h2>
@@ -15,7 +15,7 @@
         {
             <tr>
                 <td>
-                    <h4>@(chunk.Id)</h4>
+                    <h4>ChunkId: @(chunk.Id)</h4>
                     <div class="mainTranscript">
                         @Html.Raw(Util.Newlineify(chunk.Content))
                     </div>

@@ -250,7 +250,8 @@ namespace DiaryUI
             "\"corrections_on_past_information\": [\"<Correction1, if any>`\"], " +
             "\"activities_described\": [\"<Activity1, if any>`\", \"<Further activities, if present>\"], " +
             "\"people_involved\": [\"<person1, if any>\", \"<person2>\", ...]," +
-            "\"most_interesting_quotes\": [\"<quote1, if any>\", \"<quote2>\", ...]}"
+            "\"most_interesting_quotes\": [\"<quote1, if any>\", \"<quote2>\", ...]}" +
+            "\"topics_to_follow_up_on\": [\"follow up topic 1\", \"<follow up topic 2>\", ...]}"
             ;
         public override string Render(string rawResponse)
         {
@@ -269,7 +270,8 @@ namespace DiaryUI
                 uumap[3] = "Activities";
                 uumap[4] = "People";
                 uumap[5] = "Quotes";
-                foreach (var l in new List<List<string>>() { oo.todos, oo.notes_to_self, oo.corrections_on_past_information, oo.activities_described, oo.people_involved, oo.most_interesting_quotes })
+                uumap[6] = "Topics to follow up on";
+                foreach (var l in new List<List<string>>() { oo.todos, oo.notes_to_self, oo.corrections_on_past_information, oo.activities_described, oo.people_involved, oo.most_interesting_quotes, oo.topics_to_follow_up_on })
                 {
                     if (l.Count() > 0)
                     {
@@ -306,6 +308,7 @@ namespace DiaryUI
             public List<string> activities_described { get; set; } = new List<string>();
             public List<string> people_involved { get; set; } = new List<string>();
             public List<string> most_interesting_quotes { get; set; } = new List<string>();
+            public List<string> topics_to_follow_up_on { get; set; } = new List<string>();
         }
     }
 }

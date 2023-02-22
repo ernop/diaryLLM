@@ -22,7 +22,32 @@ namespace DiaryUI
         public IActionResult Index()
         {
             //force
+            ViewData["title"] = "Transcript Index";
             return Redirect("/transcript/3");
+        }
+
+        [HttpGet("/Chunk/{chunkId}/delete")]
+        public IActionResult ChunkDelete(int chunkId, bool delete)
+        {
+            using (var db = new DiaryDbContext())
+            {
+                var chunk = db.Chunks
+                    .Include(el => el.Transcript)
+                    .Include(el=>el.Queries)
+                    .FirstOrDefault(x => x.Id == chunkId);
+                if (chunk == null)
+                {
+                    throw new Exception("No query.");
+                }
+                foreach (var q in chunk.Queries)
+                {
+                    db.Queries.Remove(q);
+                }
+                db.Chunks.Remove(chunk);
+                db.SaveChanges();
+                ViewData["transcriptId"] = chunk.Transcript.Id;
+                return Redirect($"/chunks?transcriptId={chunk.Transcript.Id}");
+            }
         }
 
         [HttpGet("/Query/{queryId}/delete")]
@@ -148,6 +173,7 @@ namespace DiaryUI
         [HttpGet("/transcripts")]
         public IActionResult Transcripts()
         {
+            ViewData["title"] = "All Transcripts";
             using (var db = new DiaryDbContext())
             {
                 var model = new TranscriptsModel();
@@ -158,6 +184,40 @@ namespace DiaryUI
                         .ThenInclude(el => el.Tag)
                     .ToList();
 
+                return View(model);
+            }
+            
+        }
+
+
+        [HttpGet("/chunks")]
+        public IActionResult Chunks(int? transcriptId)
+        {
+            ViewData["title"] = "Chunks";
+
+            using (var db = new DiaryDbContext())
+            {
+                var model = new ChunksModel();
+                
+                if (transcriptId.HasValue)
+                {
+                    ViewData["title"] = $"Chunks for Transcript {transcriptId}";
+                    var chunks = db.Chunks
+                    .Include(el => el.Transcript)
+                    .Include(el => el.Queries)
+                    .Where(el => el.Transcript.Id == transcriptId);
+                    ViewData["transcriptId"] = transcriptId;
+                    model.Chunks = chunks.ToList();
+                }
+                else
+                {
+                    var chunks = db.Chunks
+                    .Include(el => el.Transcript)
+                    .Include(el => el.Queries);
+                    model.Chunks = chunks.ToList();
+                }
+
+                
                 return View(model);
             }
         }
