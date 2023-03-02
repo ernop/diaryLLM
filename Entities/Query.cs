@@ -10,7 +10,7 @@
         public override string Slug => "Query";
         public string HumanPrompt { get; set; }
         public string Prompt { get; set; }
-        
+
         /// <summary>
         /// String-enum for the "kind" of query it was. This guides interpretation
         /// For example, summary type => text summary
@@ -18,14 +18,19 @@
         /// TODO fix this? ugh.
         /// </summary>
         public string Kind { get; set; }
-        
+
         public string Response { get; set; }
-        
+
         /// <summary>
         /// The related chunk it was made on
         /// </summary>
-        public Chunk Chunk{ get; set; }
+        public Chunk Chunk { get; set; }
         public override string Describe() => $"Query:chunkId{Chunk.Id}, kind:{Kind}, Text:{Prompt}";
-        
+        public ModelEnum Model { get; set; }
+    }
+
+    public enum ModelEnum
+    {
+        GPT3_5_Turbo = 1,
     }
 }

@@ -12,22 +12,12 @@ using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var openAiService = new OpenAIService(new OpenAiOptions()
-//{
-//    ApiKey = OpenAIApiKey
-//});
-
-//openAiService.SetDefaultModelId(Engines.Davinci);
-//builder.Services.AddSingleton<OpenAIService>(openAiService);
-
 builder.Configuration.AddJsonFile("appsettings.json");
 
 builder.Services.AddRazorPages()
-    .AddRazorRuntimeCompilation()
-    ;
+    .AddRazorRuntimeCompilation();
 
 var app = builder.Build();
-
 
 app.UseStaticFiles();
 app.UseRouteDebugger();
@@ -54,7 +44,4 @@ app.UseRouter(routes =>
     });
 });
 
-
-
-//serviceCollection.AddOpenAIService();
 app.Run();

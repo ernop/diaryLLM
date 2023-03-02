@@ -28,11 +28,19 @@
                             <div class="queryKind">
                                 <div class="humanPrompt" title="@query.HumanPrompt">@query.Kind</div>
                                 <div class="fullPrompt" title="@query.Prompt">(full)</div>
-                                <a class="queryDeleteButton button" href="/Query/@query.Id/delete">X</a>
+                                <div style="display:inline-block;" class="queryDate">
+                                    @if (query.CreatedUtc.Date == default(DateTime))
+                                    {
+                                        
+                                    }
+                                    else
+                                    {
+                                        @query.CreatedUtc.ToLocalTime()
+                                    }
+                                    </div>
+                                <a style="display:inline-block;" class="queryDeleteButton button" href="/Query/@query.Id/delete">X</a>
 
                             </div>
-                            
-                            <hr>
                             <div class="renderedQuery">
                                 @Html.Raw(@Util.GetQuery(query.Kind).Render(query.Response))
                             </div>

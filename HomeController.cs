@@ -105,6 +105,8 @@ namespace DiaryUI
                     query.Response = res;
                     query.Chunk = chunk;
                     query.Kind = kind;
+                    query.Model = ModelEnum.GPT3_5_Turbo;
+                    query.CreatedUtc=DateTime.UtcNow;
                     db.Queries.Add(query);
                     db.SaveChanges();
                 }
@@ -182,6 +184,7 @@ namespace DiaryUI
                     .Include(el => el.Chunks)
                     .Include(el => el.TagInstances)
                         .ThenInclude(el => el.Tag)
+                    .OrderBy(el=>el.Filename)
                     .ToList();
 
                 return View(model);

@@ -1,6 +1,9 @@
-﻿using BERTTokenizers;
+﻿using AI.Dev.OpenAI.GPT;
+
+using BERTTokenizers;
 
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using AI.Dev.OpenAI.GPT;
 
 using Newtonsoft.Json;
 
@@ -82,10 +85,12 @@ namespace DiaryUI
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// 3/2023 fixed via https://github.com/dluc/openai-tools
+        /// </summary>
         public static int Tokenize(string text)
         {
-            var tokenizer = new BertBaseTokenizer();
-            var tokens = tokenizer.Tokenize(text);
+            var tokens = GPT3Tokenizer.Encode(text);
             return tokens.Count;
         }
 
