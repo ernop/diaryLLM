@@ -16,19 +16,19 @@ namespace DiaryUI
             Client = new OpenAIClient(new OpenAIAuthentication(Config.OpenAIApiKey));
         }
 
-        public string MakeRequest(string prompt)
+        public string MakeRequest(string prompt, string mode)
         {
             var promptTokens = Tokenize(prompt);
 
-            var maxTokenLength = 4097;
+            var maxTokenLength = 4096;
 
             //TODO fix this for big profit.
             //okay, my tokenizer is inaccurate.  For example I had 3007 according to open ai but 2847 according to me.  That meant I requested too many
 
             //so, i'm increasing the buffer.
-            var remaining = maxTokenLength - promptTokens - 400;
+            var remaining = maxTokenLength - promptTokens;
             Console.WriteLine($"requesting completion of length:{remaining}");
-            var messageList = new List<ChatPrompt>() { new ChatPrompt("user", prompt) };
+            var messageList = new List<ChatPrompt>() { new ChatPrompt(mode, prompt) };
             var request = new OpenAI.Chat.ChatRequest(messageList);
 
             try
@@ -46,6 +46,7 @@ namespace DiaryUI
                 {
 
                 }
+                Console.WriteLine($"Failed to interact with openai.  Ex: {ex}");
                 return null;
             }
 

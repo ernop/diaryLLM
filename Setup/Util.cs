@@ -75,7 +75,7 @@ namespace DiaryUI
         /// </summary>
         public static void Chunkify(Transcript transcript, DiaryDbContext db)
         {
-            var parts = Subdivide(transcript.Content, 3000);
+            var parts = Subdivide(transcript.Content, 3400);
             foreach (var part in parts)
             {
                 var chu = new Chunk(part);
@@ -174,6 +174,12 @@ namespace DiaryUI
                 //note: if this happens a lot check for typos in your examples in the prompt - it's very responsive
                 return response+$"<br><br>:{ex.Message}";
             }
+        }
+
+        public static int CountQueriesInTranscript(Transcript transcript)
+        {
+            var res = transcript.Chunks.SelectMany(c => c.Queries).Count();
+            return res;
         }
     }
 }

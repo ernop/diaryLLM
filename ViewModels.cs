@@ -14,6 +14,8 @@
     public class TranscriptModel
     {
         public Transcript Transcript { get; set; }
+        public Transcript NextTranscript { get; set; }
+        public Transcript PreviousTranscript { get; set; }
     }
 
     public class ChunksModel

@@ -66,7 +66,7 @@ namespace DiaryUI
 
     public class PersonalityQuery : NormalQuery
     {
-        public override string HumanReadablePrompt => $"Describe in detail the personality of everyone involved, including age, sex, origin, hometown, emotions, mind state, traits, and anything else you can surmise. Feel free to extrapolate and follow your intuition.";
+        public override string HumanReadablePrompt => $"Describe in detail the personality of everyone involved, including age, sex, origin, hometown, emotions, mind state, traits, and anything else you can surmise. Feel free to extrapolate and follow your intuition.  Speculation, creativity, even unfounded, is perfectly fine here since this context allows it and indeed, requires it.";
     }
 
     public class QuestionsQuery : JsonQuery

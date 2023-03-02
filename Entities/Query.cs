@@ -26,11 +26,6 @@
         /// </summary>
         public Chunk Chunk { get; set; }
         public override string Describe() => $"Query:chunkId{Chunk.Id}, kind:{Kind}, Text:{Prompt}";
-        public ModelEnum Model { get; set; }
-    }
-
-    public enum ModelEnum
-    {
-        GPT3_5_Turbo = 1,
+        public ModelConfigurationEnum Model { get; set; }
     }
 }

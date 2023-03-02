@@ -7,6 +7,14 @@
 <br />Recorder: @Model.Transcript.Recorder
 <br />Created: @Model.Transcript.CreatedUtc
 <br />Updated: @Model.Transcript.UpdatedUtc
+<br />Prev: @if (Model.PreviousTranscript != null)
+{
+    <a class=button href="/transcript/@Model.PreviousTranscript.Id">@Model.PreviousTranscript.Filename (@Model.PreviousTranscript.Content.Length)</a>
+}
+<br />Next: @if (Model.NextTranscript != null)
+{
+    <a class=button href="/transcript/@Model.NextTranscript.Id">@Model.NextTranscript.Filename (@Model.NextTranscript.Content.Length)</a>
+}
 
 <table>
     <h2>Chunks</h2>
@@ -15,7 +23,7 @@
         {
             <tr>
                 <td>
-                    <h4>ChunkId: @(chunk.Id)</h4>
+                    <h4>Chunk @chunk.Id - Tokens: @Util.Tokenize(chunk.Content)</h4>
                     <div class="mainTranscript">
                         @Html.Raw(Util.Newlineify(chunk.Content))
                     </div>
@@ -28,6 +36,7 @@
                             <div class="queryKind">
                                 <div class="humanPrompt" title="@query.HumanPrompt">@query.Kind</div>
                                 <div class="fullPrompt" title="@query.Prompt">(full)</div>
+                                <div class="fullPrompt">@query.Model</div>
                                 <div style="display:inline-block;" class="queryDate">
                                     @if (query.CreatedUtc.Date == default(DateTime))
                                     {

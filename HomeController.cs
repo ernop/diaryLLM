@@ -33,7 +33,7 @@ namespace DiaryUI
             {
                 var chunk = db.Chunks
                     .Include(el => el.Transcript)
-                    .Include(el=>el.Queries)
+                    .Include(el => el.Queries)
                     .FirstOrDefault(x => x.Id == chunkId);
                 if (chunk == null)
                 {
@@ -56,7 +56,7 @@ namespace DiaryUI
             using (var db = new DiaryDbContext())
             {
                 var query = db.Queries
-                    .Include(el=>el.Chunk)
+                    .Include(el => el.Chunk)
                     .ThenInclude(el => el.Transcript)
                     .FirstOrDefault(x => x.Id == queryId);
                 if (query == null)
@@ -92,25 +92,37 @@ namespace DiaryUI
 
                 var fullPrompt = q.GenerateFullPrompt(chunk, transcript.Filename);
                 var humanPrompt = q.HumanReadablePrompt;
-                var res = client.MakeRequest(fullPrompt);
+
+                var mode = "assistant";
+                var res = client.MakeRequest(fullPrompt, mode);
                 if (res == null)
                 {
                     //failed to make query.
                 }
                 else
                 {
+                    var usedModelAndConfiguration = ModelConfigurationEnum.DEFAULT;
+                    if (mode == "user")
+                    {
+                        usedModelAndConfiguration = ModelConfigurationEnum.GPT3_5_Turbo__User;
+                    }
+                    else if (mode == "assistant")
+                    {
+                        usedModelAndConfiguration = ModelConfigurationEnum.GPT3_5_Turbo__Assistant;
+                    }
+
                     var query = new Query();
                     query.Prompt = fullPrompt;
                     query.HumanPrompt = humanPrompt;
                     query.Response = res;
                     query.Chunk = chunk;
                     query.Kind = kind;
-                    query.Model = ModelEnum.GPT3_5_Turbo;
-                    query.CreatedUtc=DateTime.UtcNow;
+                    query.Model = usedModelAndConfiguration;
+                    query.CreatedUtc = DateTime.UtcNow;
                     db.Queries.Add(query);
                     db.SaveChanges();
                 }
-                
+
                 return Redirect($"/transcript/{transcript.Id}");
             }
         }
@@ -147,7 +159,7 @@ namespace DiaryUI
                     Console.WriteLine($"evaluating {fp}");
                     //existence.
                     var exiTranscript = db.Transcripts
-                        .Include(el=>el.Chunks)
+                        .Include(el => el.Chunks)
                         .FirstOrDefault(p => p.TranscriptPath == fp);
                     if (exiTranscript != null)
                     {
@@ -182,14 +194,15 @@ namespace DiaryUI
                 model.Transcripts = db.Transcripts
                     .Include(el => el.Recorder)
                     .Include(el => el.Chunks)
+                        .ThenInclude(el => el.Queries)
                     .Include(el => el.TagInstances)
                         .ThenInclude(el => el.Tag)
-                    .OrderBy(el=>el.Filename)
+                    .OrderByDescending(el => el.Date)
                     .ToList();
 
                 return View(model);
             }
-            
+
         }
 
 
@@ -201,7 +214,7 @@ namespace DiaryUI
             using (var db = new DiaryDbContext())
             {
                 var model = new ChunksModel();
-                
+
                 if (transcriptId.HasValue)
                 {
                     ViewData["title"] = $"Chunks for Transcript {transcriptId}";
@@ -220,7 +233,7 @@ namespace DiaryUI
                     model.Chunks = chunks.ToList();
                 }
 
-                
+
                 return View(model);
             }
         }
@@ -230,17 +243,27 @@ namespace DiaryUI
         {
             using (var db = new DiaryDbContext())
             {
-                var model = new TranscriptModel();
-                var transcript = db.Transcripts
+                var transcriptsWithRelatedobjects = db.Transcripts
                     .Include(el => el.TagInstances)
                         .ThenInclude(el => el.Tag)
                     .Include(el => el.Chunks)
-                        .ThenInclude(el => el.Queries)
+                        .ThenInclude(el => el.Queries);
+
+                var model = new TranscriptModel();
+                var transcript = transcriptsWithRelatedobjects
                     .FirstOrDefault(el => el.Id == id);
                 if (transcript == null)
                 {
                     return View();
                 }
+
+                model.NextTranscript = transcriptsWithRelatedobjects
+                    .OrderBy(el => el.CreatedUtc)
+                    .FirstOrDefault(el => el.CreatedUtc > transcript.CreatedUtc);
+
+                model.PreviousTranscript = transcriptsWithRelatedobjects
+                    .OrderByDescending(el => el.CreatedUtc)
+                    .FirstOrDefault(el => el.CreatedUtc < transcript.CreatedUtc);
 
                 model.Transcript = transcript;
                 return View(model);

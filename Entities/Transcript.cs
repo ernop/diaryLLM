@@ -40,7 +40,7 @@ namespace DiaryUI
         }
 
         public Transcript() { }
-        
+
         public Transcript(string fp, DiaryDbContext db)
         {
             TranscriptPath = fp;
@@ -91,12 +91,27 @@ namespace DiaryUI
                 Recorder = Person.GetOrCreate("Unknown", db);
             }
 
-            var yearre = new Regex(@"(\d{4,4})").Match(Filename);
-            if (yearre.Success)
+            //matching my recorder's output format            
+            var mmhhre = new Regex(@"(\d{2,2})(\d{2,2})_(\d{2,2})(\d{2,2})").Match(Filename);
+            if (mmhhre.Success)
             {
-                var year = int.Parse(yearre.Groups[1].Value);
-                var newDate = new DateTime(year, 1, 1);
-                Date = newDate;
+                var year = DateTime.UtcNow.Year;
+                var month = int.Parse(mmhhre.Groups[1].Value);
+                var day = int.Parse(mmhhre.Groups[2].Value);
+                var hour = int.Parse(mmhhre.Groups[3].Value);
+                var min = int.Parse(mmhhre.Groups[4].Value);
+                var date = new DateTime(year, month, day, hour, min, 0);
+                Date = date;
+            }
+            else
+            {
+                var yearre = new Regex(@"(\d{4,4})").Match(Filename);
+                if (yearre.Success)
+                {
+                    var year = int.Parse(yearre.Groups[1].Value);
+                    var newDate = new DateTime(year, 1, 1);
+                    Date = newDate;
+                }
             }
         }
     }

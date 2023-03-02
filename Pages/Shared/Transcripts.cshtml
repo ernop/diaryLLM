@@ -10,6 +10,7 @@
         <td>created</td>
         <td>date</td>
         <td>tags</td>
+        <td>queries</td>
         <td>chunks</td>
         <td>line</td>
     </tr>
@@ -23,6 +24,10 @@
             <td>@item.CreatedUtc.ToLongDateString()</td>
             <td>@item.Date</td>
             <td>@Html.Raw(string.Join(',',item.TagInstances.Select(el=>el.Link())))</td>
+
+            <td>
+                @Util.CountQueriesInTranscript(item)
+            </td>
             <td>
 
                 @if (item.Chunks != null)
