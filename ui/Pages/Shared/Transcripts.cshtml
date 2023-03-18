@@ -6,12 +6,14 @@
         <td>id</td>
         <td>filename</td>
         <td>words</td>
+        <td>chunks</td>
+        <td>queries</td>
         <td>recorder</td>
         <td>created</td>
         <td>date</td>
         <td>tags</td>
-        <td>queries</td>
-        <td>chunks</td>
+        
+        
         <td>line</td>
     </tr>
     @foreach (var item in Model.Transcripts)
@@ -20,22 +22,19 @@
             <td style="font-size:2.5em;"><a href="/transcript/@item.Id">@item.Id</a></td>
             <td title="@item.TranscriptPath">@item.Filename</td>
             <td>@item.Content.Split(' ').Length</td>
-            <td>@Html.Raw(item.Recorder?.Link())</td>
-            <td>@item.CreatedUtc.ToLongDateString()</td>
-            <td>@item.Date</td>
-            <td>@Html.Raw(string.Join(',',item.TagInstances.Select(el=>el.Link())))</td>
-
             <td>
-                @Util.CountQueriesInTranscript(item)
-            </td>
-            <td>
-
                 @if (item.Chunks != null)
                 {
                     <a href="/chunks?transcriptid=@item.Id">@item.Chunks.Count()</a>
                 }
-
             </td>
+            <td>
+                @Util.CountQueriesInTranscript(item)
+            </td>
+            <td>@Html.Raw(item.Recorder?.Link())</td>
+            <td>@item.CreatedUtc.ToLongDateString()</td>
+            <td>@item.Date</td>
+            <td>@Html.Raw(string.Join(',',item.TagInstances.Select(el=>el.Link())))</td>
             <td>@item.Content?.Substring(0,Math.Min(item.Content.Length,150))</td>
         </tr>
     }

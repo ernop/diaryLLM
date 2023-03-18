@@ -1,5 +1,5 @@
 *.secret
-bin/*
-obj/*
+*/bin/*
+*/obj/*
 *.csproj.user
 .vs/*

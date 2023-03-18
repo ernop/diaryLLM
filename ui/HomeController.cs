@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
 
 using OpenAI;
+using OpenAI.Chat;
 using OpenAI.Completions;
 using OpenAI.Models;
 
@@ -75,6 +76,9 @@ namespace DiaryUI
         public IActionResult DoLookup(string kind, int chunkId)
         {
             var client = new LLMClient();
+            //var messageList = new List<ChatPrompt>() { new ChatPrompt(mode, prompt) };
+            //var request = new OpenAI.Chat.ChatRequest(messageList);
+
             using (var db = new DiaryDbContext())
             {
                 var chunk = db.Chunks
